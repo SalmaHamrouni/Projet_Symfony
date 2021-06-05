@@ -1,0 +1,51 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Candidature{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<div class="container">
+    <div class="table-responsive">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-xs-6" style="margin-left: 70%; padding: 2%">
+                     {% if   is_granted("ROLE_CANDIDAT") %}
+                        <a href="{{ path('candidature_new') }}" class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Add New </span></a>
+                    {% endif %}
+                        <a href="#" class="btn btn-primary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>						
+                    </div>
+                </div>
+            </div>
+<table class="table table-hover">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Id</th>
+                <th>Contenu_c</th>
+                <th>Identifiant de candidat</th>
+                <th>Valider</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for candidature in candidatures %}
+            <tr>
+                <td></td>
+                <td>{{ candidature.id }}</td>
+                <td>{{ candidature.ContenuC }}</td>
+                <td>{{ candidature.user.getId() }}</td>
+                <td>{{ candidature.valider ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('candidature_show', {'id': candidature.id}) }}" ><i class="material-icons" style="color:#27AE60">&#xE417;</i></a>
+                    <a href="{{ path('candidature_edit', {'id': candidature.id}) }}"><i class="material-icons" style="color:#F39C12">&#xE8B8;</i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

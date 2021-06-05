@@ -1,0 +1,34 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Offre{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2>My Profile</h2>
+
+    <table class="table">
+        <tbody>
+            <tr>
+            <tr>
+                <th>ID</th>
+                <td>{{ app.user.id }}</td>
+            </tr>
+                <th>Name</th>
+                <td>{{ app.user.name }}</td>
+            </tr>
+            <tr>
+                <th>CIN</th>
+                <td>{{ app.user.cin }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ app.user.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <a class="btn btn-primary" href="{{ path('candidat_profile_edit', {'id': app.user.id}) }}" style="margin-left:70%">edit</a>
+    </div>
+
+{% endblock %}

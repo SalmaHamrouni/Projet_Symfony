@@ -1,0 +1,48 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Categorie index{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<div class="container">
+    <div class="table-responsive">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-xs-6" style="margin-left: 70%; padding: 2%">
+                        <a href="{{ path('categorie_new') }}" class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Add New </span></a>
+                        <a href="#" class="btn btn-primary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>						
+                    </div>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Id</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                 {% for categorie in categories %}
+                    <tr>
+                    <td></td>
+                        <td>{{ categorie.id }}</td>
+                        <td>{{ categorie.titre }}</td>
+                        <td>{{ categorie.description }}</td>
+                        <td style="padding: 2%">
+                            <a href="{{ path('categorie_edit', {'id': categorie.id}) }}" style="padding: 1%" title="Settings" data-toggle="tooltip"><i class="material-icons" style="color:#27AE60">&#xE8B8;</i></a>
+                            <a href="{{ path('categorie_show', {'id': categorie.id}) }}" style="padding: 1%"  title="show" data-toggle="tooltip"><i class="material-icons" style="color:#F39C12">&#xE417;</i></a>
+                        </td>
+                    </tr>
+                     {% else %}
+                    <tr>
+                        <td colspan="5">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+{% endblock %}

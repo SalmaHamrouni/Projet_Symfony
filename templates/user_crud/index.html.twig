@@ -1,0 +1,53 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="col-xs-6" style="margin-left: 70%; padding: 2%"> 
+        <a href="{{ path('user_crud_new') }}" class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Add New </span></a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>CIN</th>
+                <th>Roles</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.cin }}</td>
+                <td> {% for role in user.roles %}
+                            {% if role == "ROLE_ADMIN" %}
+                                <i class="fas fa-user" style="color:#d9534f"></i>  Administrateur
+                            {% elseif role == "ROLE_RECRUTEUR" %}
+                                <i class="fas fa-user" style="color:#5cb85c"></i>   Recruteur
+                            {% elseif role == "ROLE_CANDIDAT"  %}
+                            <i class="fas fa-user" style="color:#f0ad4e"></i>  Candidat
+                            {% endif %}
+                        {% endfor %}
+                       </td>
+                
+                <td>
+                    <a href="{{ path('user_crud_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('user_crud_edit', {'id': user.id}) }}">edit</a>
+                    
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>    
+{% endblock %}

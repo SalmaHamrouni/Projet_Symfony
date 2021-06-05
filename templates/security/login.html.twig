@@ -1,0 +1,42 @@
+{% extends 'base_auth.html.twig' %}
+{% block title %}Log in!{% endblock %}
+   
+                        {% block body %}
+                            <form method="post">
+                                {% if error %}
+                                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                {% endif %}
+
+                                {% if app.user %}
+                                <p class="loginhere">
+                                    <div class="mb-3">
+                                        You are logged in as {{ app.user.username }}, <a class="loginhere-link" href="{{ path('app_logout') }}">Logout</a>
+                                    </div>
+                                </p>    
+                                {% endif %}
+
+                                <h1 class="h3 mb-3 font-weight-normal form-title">Please sign in</h1>
+                                <div class="form-group">
+                                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-input" autocomplete="email" placeholder="Your Email" required autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" id="inputPassword" autocomplete="current-password" class="form-input"  placeholder="Password" required>
+                                </div>
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                                <div class="form-group">
+                                    <button class="form-submit" type="submit">
+                                        Sign in
+                                    </button>
+                                </div>    
+                                <div>
+                            </form>
+                            <p class="loginhere">
+                               Create an account ! <a href="/register" class="loginhere-link">Sing up</a>
+                          </p>
+                        </div>
+                                </div>
+                        </section>
+
+                    </div>
+                {% endblock %}
+   

@@ -1,0 +1,47 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}Offre index{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+<div class="container">
+    <div class="table-responsive">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-xs-6" style="margin-left: 70%; padding: 2%">
+                        <a href="{{ path('offre_new') }}" class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Add New </span></a>
+                        <a href="#" class="btn btn-primary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>						
+                    </div>
+                </div>
+            </div>
+<table class="table ">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Contenu</th>
+                <th>Categorie</th>
+                <th>Date_C</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for offre in offres %}
+            <tr>
+                <td>{{ offre.id }}</td>
+                <td>{{ offre.Contenu }}</td>
+                <td>{{ offre.Categorie }}</td>
+                <td>{{ offre.DateC ? offre.DateC|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('offre_show', {'id': offre.id}) }}"><i class="material-icons" style="color:#27AE60">&#xE417;</i></a>
+                    <a href="{{ path('offre_edit', {'id': offre.id}) }}"><i class="material-icons" style="color:#F39C12">&#xE8B8;</i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+<div class="grix xs4 container">
+		<div class="col-xs4">
+  
+    {{ form_row(form.Contenu_c) }}
+    {{ form_widget(form.valider, { 'attr' : {'style':'display:none'} } )  }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+
+</div>  
+</div>  
+{{ form_end(form) }}
