@@ -59,6 +59,11 @@ class User implements UserInterface
      */
     private $CIN;
 
+    /**
+     * @ORM\Column(type="string", length=255,nullable=true)
+     */
+    private $CV;
+
     public function __construct()
     {
         $this->candidatures = new ArrayCollection();
@@ -173,6 +178,18 @@ class User implements UserInterface
     public function setCIN(string $CIN): self
     {
         $this->CIN = $CIN;
+
+        return $this;
+    }
+
+    public function getCV(): ?string
+    {
+        return $this->CV;
+    }
+
+    public function setCV(string $CV): self
+    {
+        $this->CV = $CV;
 
         return $this;
     }

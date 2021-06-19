@@ -15,6 +15,22 @@
         {{ form_widget(registrationForm.plainPassword,{'attr': {'class': 'form-input', 'placeholder': 'Your Password'}}
         )}}
         </div>
+         <div class="form-group">   
+        {{ form_widget(registrationForm.CIN,{'attr': {'class': 'form-input', 'placeholder': 'Your CIN'}}
+        )}}
+        </div>
+         <div class="form-group">   
+        {{ form_widget(registrationForm.name,{'attr': {'class': 'form-input', 'placeholder': 'Your name'}}
+        )}}
+        </div>
+        <div class="form-group">   
+        {{ form_widget(registrationForm.roles,{'attr': {'class': 'form-input', 'placeholder': 'Your name'}}
+        )}}
+        </div>
+        <div class="form-group">   
+        {{ form_widget(registrationForm.CV,{'attr': {'class': 'form-input', 'placeholder': 'Your CV'}}
+        )}}
+        </div>
        <div class="form-group">       
        {{ form_row(registrationForm.agreeTerms) }}
       </div>

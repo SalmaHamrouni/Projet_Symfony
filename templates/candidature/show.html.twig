@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="container">
-    <h1>Candidature</h1>
+    <h2>Candidature</h2>
 
     <table class="table">
         <tbody>
@@ -13,19 +13,60 @@
                 <td>{{ candidature.id }}</td>
             </tr>
             <tr>
-                <th>Contenu_c</th>
-                <td>{{ candidature.ContenuC }}</td>
+                <th>Titre de l'offre</th>
+                <td>{{ candidature.getIdOffre().getContenu()}}</td>
             </tr>
             <tr>
-                <th>Valider</th>
-                <td>{{ candidature.valider ? 'Yes' : 'No' }}</td>
+                <th>Email du Candidat</th>
+                <td>{{ candidature.getUser().getUsername()}}</td>
+            </tr>
+            <tr>
+                <th>CIN du Candidat</th>
+                <td>{{ candidature.getUser().getCIN()}}</td>
+            </tr>
+         
+            <tr>
+                <th>Etat</th>
+                <td>{{ candidature.valider }}</td>
             </tr>
         </tbody>
     </table>
+    
+    <a href="{{ path('candidature_index',{'id': app.user.id}) }}">back to list</a><hr>
+    {% if   is_granted("ROLE_RECRUTEUR") %}
+    <a href="{{ path('rendez_vous_new', {'id': candidature.id}) }}" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Valider</a>
+    <a href="{{ path('candidature_edit_nv', {'id': candidature.id}) }}" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Réfuser</a>
+   {% endif %}
 
-    <a href="{{ path('candidature_index') }}">back to list</a>
+{% if   is_granted("ROLE_CANDIDAT") %}
+   {% if candidature.valider == "Valider" %}
+        <div class="card text-center">
+    <div class="alert alert-success" role="alert">
+        Félicitations ! Votre candidature est validé. Voici les détails pour  votre rendez-vous. 
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Important</h5>
+        <p class="card-text">A noter : {{ candidature.getRendezVous().getRemarque()}}<hr>
+          Date du rendez-vous :  {{ candidature.getRendezVous().getDate() ? candidature.getRendezVous().getDate()|date('Y-m-d') : ''}} <hr>
+          Heure du rendez-vous :  {{ candidature.getRendezVous().getHeure() ? candidature.getRendezVous().getHeure()|date('H:i:s') : ''}}
+        </p>
 
-    <a href="{{ path('candidature_edit', {'id': candidature.id}) }}">edit</a>
+    </div>
+    <div class="card-footer text-muted">
+        2 days ago
+    </div>
+    </div>
+    {% elseif candidature.valider == "Refuser" %}
 
+    <div class="alert alert-danger" role="alert">
+        Malheureusement ! Votre candidature est réfusé 
+    </div>
+    {% else %}
+    <div class="alert alert-warning" role="alert">
+        Votre candidature est en cours de traitement !
+    </div>
+    {% endif %}
     {{ include('candidature/_delete_form.html.twig') }}
+    {% endif %}
+
 {% endblock %}

@@ -39,34 +39,49 @@
         {% endif %}
         <!-- Nav Item - Utilities Collapse Menu -->
          {% if   is_granted("ROLE_RECRUTEUR") %}
+         
         <li class="nav-item">
             <a class="nav-link collapsed" href="/candidature/index" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                 <i class="fas fa-fw fa-wrench"></i>
                 <span>Candidatures</span>
             </a>
         </li>
-        {% endif %}
 
-        {% if   is_granted("ROLE_CANDIDAT") %}
-
-
-        <!-- Nav Item - Pages Collapse Menu -->
-         
-        <li class="nav-item active">
-            <a class="nav-link" href="/candidat/candidat_show" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Profile</span>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/rendez/vous" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Les rendez vous</span>
             </a>
         </li>
         {% endif %}
 
+        {% if   is_granted("ROLE_CANDIDAT") %}
+
+        <li class="nav-item active"> 
+            <a class="nav-link collapsed" href="/offre/index" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <i class="fas fa-fw fa-cog"></i>
+                <span>Offres</span>
+            </a>
+        </li>
+      
+
         
         <!-- Nav Item - Pages Collapse Menu -->
-           {% if   is_granted("ROLE_CANDIDAT") %}
+        
         <li class="nav-item ">
-            <a class="nav-link" href="/candidat/new_Candidature_user" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <a class="nav-link" href="/candidature/index_candidature?id={{app.user.id}}" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Candidature</span>
+            </a>
+        </li>
+      
+
+          <!-- Nav Item - Pages Collapse Menu -->
+         
+        <li class="nav-item ">
+            <a class="nav-link" href="/candidat/candidat_show" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <i class="fas fa-fw fa-table"></i>
+                <span>Profile</span>
             </a>
         </li>
         {% endif %}
@@ -89,11 +104,6 @@
         <li class="nav-item">
                   <div id="collapsePages" class="collapse show" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="/login">Login</a>
-                    {% if   is_granted("ROLE_CANDIDAT") %}
-                    <a class="collapse-item" href="/register">Register</a>
-                    {% endif %}
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">Login Screens:</h6>
                     <a class="collapse-item" href="/logout">Logout</a>
@@ -126,17 +136,6 @@
                     <i class="fa fa-bars"></i>
                 </button>
 
-                <!-- Topbar Search -->
-                <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                    <div class="input-group">
-                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
 
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
@@ -162,17 +161,9 @@
                     </li>
 
                
-                    <!-- Nav Item - Messages -->
-                    <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-envelope fa-fw"></i>
-                            <!-- Counter - Messages -->
-                            <span class="badge badge-danger badge-counter">7</span>
-                        </a>
-                  
                     <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="/candidat/candidat_show" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">
                               {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 <p>{{ app.user.name }}</p>

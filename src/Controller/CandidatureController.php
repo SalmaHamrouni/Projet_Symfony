@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Candidature;
 use App\Form\CandidatureType;
 use App\Repository\CandidatureRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
 * @Route("/candidature")
@@ -16,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CandidatureController extends AbstractController
 {
     /**
-     * @Route("/index", name="candidature_index", methods={"GET"})
+     * @Route("/index", name="index", methods={"GET"})
      */
     public function index(CandidatureRepository $candidatureRepository): Response
     {
@@ -24,6 +25,22 @@ class CandidatureController extends AbstractController
             'candidatures' => $candidatureRepository->findAll(),
         ]);
     }
+    
+
+    /**
+     * @Route("/index_candidature", name="candidature_index", methods={"GET"})
+     */
+    public function index_Candidature(CandidatureRepository $candidatureRepository,Request $request): Response
+    {
+        $user= $this->getDoctrine()
+            ->getRepository(User::class)
+            ->find($request->query->get('id'));
+            
+        return $this->render('candidature/index.html.twig', [
+            'candidatures' => $candidatureRepository->findBy(['user' => $user ,]),
+        ]);
+    }
+    
 
     /**
      * @Route("/new", name="candidature_new", methods={"GET","POST"})
@@ -60,24 +77,35 @@ class CandidatureController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="candidature_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="candidature_edit_Valide", methods={"GET","POST"})
      */
     public function edit(Request $request, Candidature $candidature): Response
     {
-        $form = $this->createForm(CandidatureType::class, $candidature);
-        $form->handleRequest($request);
+        
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $candidature->setValider("Valider");
 
-            return $this->redirectToRoute('candidature_index');
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($candidature);
+            $entityManager->flush();
+            return $this->redirectToRoute('rendez_vous_new',array('candidature' => $candidature));
+           
         }
+    
+    /**
+     * @Route("/{id}/editNV", name="candidature_edit_nv", methods={"GET","POST"})
+     */
+    public function editnv(Request $request, Candidature $candidature): Response
+    {
 
-        return $this->render('candidature/edit.html.twig', [
-            'candidature' => $candidature,
-            'form' => $form->createView(),
-        ]);
-    }
+       $candidature->setValider("Refuser");
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($candidature);
+            $entityManager->flush();
+            return $this->redirectToRoute('index');
+           
+        }
 
     /**
      * @Route("/{id}", name="candidature_delete", methods={"POST"})
@@ -90,8 +118,9 @@ class CandidatureController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('candidature_index');
-    }
+        
+        return $this->render('candidature/success_delete.html.twig');
 
     
+}
 }

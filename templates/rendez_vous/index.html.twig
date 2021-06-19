@@ -1,0 +1,42 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}RendezVous index{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h2>Les rendez-vous</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email du candidat</th>
+                <th>Adresse</th>
+                <th>Date</th>
+                <th>Heure</th>
+                <th>Remarque</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rendez_vou in rendez_vouses %}
+            <tr>
+                <td>{{ rendez_vou.id }}</td>
+                <td>{{ rendez_vou.candidature.getUser().getUsername() }}</td>
+                <td>{{ rendez_vou.adresse }}</td>
+                <td>{{ rendez_vou.Date ? rendez_vou.Date|date('Y-m-d') : '' }}</td>
+                <td>{{ rendez_vou.heure ? rendez_vou.heure|date('H:i:s') : '' }}</td>
+                <td>{{ rendez_vou.remarque }}</td>
+                <td>
+                    <a href="{{ path('rendez_vous_show', {'id': rendez_vou.id}) }}">show</a>
+                    <a href="{{ path('rendez_vous_edit', {'id': rendez_vou.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

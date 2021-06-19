@@ -22,17 +22,23 @@ class Candidature
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Contenu_c;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
     private $valider;
     
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="candidatures")
      */
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Offre::class, inversedBy="candidature")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $id_offre;
+
+    /**
+     * @ORM\OneToOne(targetEntity=RendezVous::class, mappedBy="candidature", cascade={"persist", "remove"})
+     */
+    private $rendezVous;
 
     public function getUser(): ?User
     {
@@ -51,26 +57,44 @@ class Candidature
         return $this->id;
     }
 
-    public function getContenuC(): ?string
-    {
-        return $this->Contenu_c;
-    }
 
-    public function setContenuC(string $Contenu_c): self
-    {
-        $this->Contenu_c = $Contenu_c;
-
-        return $this;
-    }
-
-    public function getValider(): ?bool
+    public function getValider(): ?string
     {
         return $this->valider;
     }
 
-    public function setValider(bool $valider): self
+    public function setValider(string $valider): self
     {
         $this->valider = $valider;
+
+        return $this;
+    }
+
+    public function getIdOffre(): ?Offre
+    {
+        return $this->id_offre;
+    }
+
+    public function setIdOffre(?Offre $id_offre): self
+    {
+        $this->id_offre = $id_offre;
+
+        return $this;
+    }
+
+    public function getRendezVous(): ?RendezVous
+    {
+        return $this->rendezVous;
+    }
+
+    public function setRendezVous(RendezVous $rendezVous): self
+    {
+        // set the owning side of the relation if necessary
+        if ($rendezVous->getCandidature() !== $this) {
+            $rendezVous->setCandidature($this);
+        }
+
+        $this->rendezVous = $rendezVous;
 
         return $this;
     }

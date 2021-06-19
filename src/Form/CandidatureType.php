@@ -16,10 +16,9 @@ class CandidatureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
 {
             $builder
-                ->add('Contenu_c')
-                ->add('valider')
                 
-                ;
+                ->add('valider')
+                 ;
                 
         }
     

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OffreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,15 +24,26 @@ class Offre
      */
     private $Contenu;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $Categorie;
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
     private $Date_C;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Candidature::class, mappedBy="id_offre")
+     */
+    private $candidature;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="offre")
+     */
+    private $categorie;
+
+    public function __construct()
+    {
+        $this->candidature = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -49,17 +62,6 @@ class Offre
         return $this;
     }
 
-    public function getCategorie(): ?string
-    {
-        return $this->Categorie;
-    }
-
-    public function setCategorie(string $Categorie): self
-    {
-        $this->Categorie = $Categorie;
-
-        return $this;
-    }
 
     public function getDateC(): ?\DateTimeInterface
     {
@@ -69,6 +71,48 @@ class Offre
     public function setDateC(?\DateTimeInterface $Date_C): self
     {
         $this->Date_C = $Date_C;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Candidature[]
+     */
+    public function getCandidature(): Collection
+    {
+        return $this->candidature;
+    }
+
+    public function addCandidature(Candidature $candidature): self
+    {
+        if (!$this->candidature->contains($candidature)) {
+            $this->candidature[] = $candidature;
+            $candidature->setIdOffre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidature(Candidature $candidature): self
+    {
+        if ($this->candidature->removeElement($candidature)) {
+            // set the owning side to null (unless already changed)
+            if ($candidature->getIdOffre() === $this) {
+                $candidature->setIdOffre(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): self
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 use App\Entity\User;
+use App\Entity\Offre;
+use App\Form\EditType;
+use App\Form\UserType;
 use App\Entity\Candidature;
 use App\Form\CandidatureType;
-use App\Form\UserType;
 use App\Repository\CandidatureRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
@@ -24,33 +26,47 @@ class NewCondidatureController extends AbstractController
      */
     public function newCandidatureUser(Request $request): Response
     {
-        $candidature = new Candidature();
-        $candidature->setUser($this->getUser());
-        $form = $this->createForm(CandidatureType::class, $candidature);
-        $form->handleRequest($request);
+        
+        if($request->query->get('id'))
+        {
+            $offre= $this->getDoctrine()
+            ->getRepository(Offre::class)
+            ->find($request->query->get('id'));
+            $candidature = new Candidature();
+            $candidature->setUser($this->getUser());
+            $candidature->setIdOffre($offre);
+            $candidature->setValider("En Attente");
+            
+           /* $form = $this->createForm(CandidatureType::class, $candidature);
+            $form->handleRequest($request);*/
 
-        if ($form->isSubmitted() && $form->isValid()) {
-           
-           
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($candidature);
             $entityManager->flush();
+             //dd("succes");
+            return $this->redirectToRoute('indexCandidature');
+           
 
-            return $this->redirectToRoute('home');
-        }
-
-        return $this->render('/new_condidature/index.html.twig', [
-            'candidature' => $candidature,
-            'form' => $form->createView(),
+           
+        }     
+    }
+    
+    /**
+     * @Route("/index", name="indexCandidature", methods={"GET"})
+     */
+    public function index(CandidatureRepository $candidatureRepository): Response
+    {
+        return $this->render('candidature/index.html.twig', [
+            'candidatures' => $candidatureRepository->findAll(),
         ]);
     }
 
      /**
-     * @Route("/candidat_show", methods={"GET"})
+     * @Route("/candidat_show", methods={"GET"}, name="CandidatShow")
      */
     public function show()
     {
-        return $this->render('new_condidature/show.html.twig');
+        return $this->render('Edit_Profile/show.html.twig');
     }
 
     /**
@@ -58,22 +74,31 @@ class NewCondidatureController extends AbstractController
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+       # dd($user);
+        $form = $this->createForm(EditType::class, $user);
         $form->handleRequest($request);
+        $entityManager = $this->getDoctrine()->getManager();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
+            
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('password')->getData()
                 )
                 );
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-            return $this->redirectToRoute('candidature');
+           
+            
+           // dd("updated");
+
+            return $this->redirectToRoute('CandidatShow');
         }
 
-        return $this->render('new_condidature/edit.html.twig', [
+        return $this->render('Edit_Profile/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);

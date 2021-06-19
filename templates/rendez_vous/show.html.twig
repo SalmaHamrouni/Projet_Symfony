@@ -1,0 +1,44 @@
+{% extends 'home/base.html.twig' %}
+
+{% block title %}RendezVous{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>RendezVous</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ rendez_vou.id }}</td>
+            </tr>
+            <tr>
+                <th>Email du candidat</th>
+                <td>{{ rendez_vou.candidature.getUser().getUsername() }}</td>
+            </tr>
+            <tr>
+            <tr>
+                <th>Adresse</th>
+                <td>{{ rendez_vou.adresse }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ rendez_vou.Date ? rendez_vou.Date|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Heure</th>
+                <td>{{ rendez_vou.heure ? rendez_vou.heure|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Remarque</th>
+                <td>{{ rendez_vou.remarque }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('rendez_vous_index') }}">back to list</a>
+
+    <a href="{{ path('rendez_vous_edit', {'id': rendez_vou.id}) }}">edit</a>
+
+    {{ include('rendez_vous/_delete_form.html.twig') }}
+{% endblock %}

@@ -23,7 +23,7 @@ security:
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
@@ -35,8 +35,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/user, roles: ROLE_ADMIN }
-         - { path: ^/offre, roles: ROLE_RECRUTEUR }
-         - { path: ^/candidature, roles: ROLE_RECRUTEUR }
+         - { path: ^/offre, roles: [ROLE_CANDIDAT, ROLE_RECRUTEUR]}
+         - { path: ^/candidature, roles: [ROLE_CANDIDAT, ROLE_RECRUTEUR] }
          - { path: ^/candidat, roles: ROLE_CANDIDAT }
          - { path: ^/categorie, roles: ROLE_RECRUTEUR }
+        
          

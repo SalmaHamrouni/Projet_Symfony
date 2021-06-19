@@ -48,6 +48,7 @@ class OffreController extends AbstractController
         ]);
     }
 
+    
     /**
      * @Route("/{id}", name="offre_show", methods={"GET"})
      */

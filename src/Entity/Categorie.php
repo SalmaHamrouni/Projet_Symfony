@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class Categorie
      * @ORM\Column(type="string", length=255)
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Offre::class, mappedBy="categorie")
+     */
+    private $offre;
+
+    public function __construct()
+    {
+        $this->offre = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,36 @@ class Categorie
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Offre[]
+     */
+    public function getOffre(): Collection
+    {
+        return $this->offre;
+    }
+
+    public function addOffre(Offre $offre): self
+    {
+        if (!$this->offre->contains($offre)) {
+            $this->offre[] = $offre;
+            $offre->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffre(Offre $offre): self
+    {
+        if ($this->offre->removeElement($offre)) {
+            // set the owning side to null (unless already changed)
+            if ($offre->getCategorie() === $this) {
+                $offre->setCategorie(null);
+            }
+        }
 
         return $this;
     }
